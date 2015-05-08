@@ -1,0 +1,39 @@
+{
+	"name": "mmic/sentinelldap",
+	"type": "platform-extension",
+	"description": "Adds LDAP for Active Directory functionality to Cartalyst Sentinel",
+	"authors": [
+		{
+			"name": "Medical Mutual Insurance Company of Maine",
+			"email": "webmaster@medicalmutual.com"
+		}
+	],
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://packages.cartalyst.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"cartalyst/composer-installers": "1.2.*",
+		"illuminate/support": "4.2.*",
+		"platform/foundation": "1.0.*"
+	},
+	"autoload": {
+		"classmap": [
+			"database/migrations",
+			"database/seeds",
+			"classes",
+			"facades",
+			"src/Controllers",
+			"src/Exceptions",
+			"src/Repositories"
+		],
+		"psr-4": {
+			"Mmic\\Sentinelldap\\": "src/"
+		}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}
