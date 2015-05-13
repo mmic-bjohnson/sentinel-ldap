@@ -20,7 +20,7 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 	public function register()
 	{
 		$this->mergeConfigFrom(
-			base_path() . '/vendor/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
+			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
 		);
 		
 		//Bind the facade for the SentinelLdapManager class.
