@@ -1,7 +1,7 @@
 {
     "name": "roshangautam/sentinel-ldap",
 	"type": "platform-extension",
-    "description": "",
+    "description": "Adds authentication via LDAP to Cartalyst Sentinel",
     "authors": [
         {
             "name": "Roshan Gautam",
@@ -16,9 +16,11 @@
     ],    
     "require": {
         "php": ">=5.4.0",
+		"cartalyst/composer-installers": "1.2.*",
         "cartalyst/sentinel": "~2.0",
         "cartalyst/support": "~1.0",
-        "illuminate/support": "5.0.*"   
+        "illuminate/support": "5.0.*",
+		"platform/foundation": "2.0.*"
     },
     "autoload": {
         "psr-4": {
