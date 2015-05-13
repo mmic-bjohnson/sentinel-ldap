@@ -57,7 +57,7 @@ return [
 	|
 	*/
 
-	'description' => 'Adds LDAP for Active Directory functionality to Cartalyst Sentinel',
+	'description' => 'Builds upon Roshan Gautam\'s extension to offer a more complete implementation',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -87,6 +87,7 @@ return [
 
 	'require' => [
 		'platform/users',
+		'roshangautam/sentinel-ldap',
 	],
 
 	/*
