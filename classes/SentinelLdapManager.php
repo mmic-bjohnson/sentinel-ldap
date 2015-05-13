@@ -1,4 +1,4 @@
-<?php namespace Mmic\Sentinelldap\Classes;
+<?php namespace Mmic\SentinelLdap\Classes;
 
 
 use ErrorException;

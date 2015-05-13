@@ -3,7 +3,7 @@
 
 use Platform\Users\Repositories\AuthRepository;
 
-use Mmic\Sentinelldap\Classes\LdapException;
+use Mmic\SentinelLdap\Classes\LdapException;
 
 class MmicAuthRepository extends AuthRepository {
 

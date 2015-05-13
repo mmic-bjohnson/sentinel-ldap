@@ -1,4 +1,4 @@
-<?php namespace Mmic\Sentinelldap\Classes;
+<?php namespace Mmic\SentinelLdap\Classes;
 
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Activation;
@@ -61,7 +61,7 @@ public function authenticate($credentials, $remember = false, $login = true)
 		else {
 			//The credentials are valid.
 			
-			$userInfo = MmicLdap::search('(email=' . $credentials['email'] . ')');
+			$userInfo = MmicLdap::search($credentials['email']);
 			
 			dd($userInfo);
 			

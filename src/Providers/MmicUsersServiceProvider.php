@@ -1,4 +1,4 @@
-<?php namespace Mmic\Sentinelldap\Providers;
+<?php namespace Mmic\SentinelLdap\Providers;
 
 
 use Platform\Users\Providers\UsersServiceProvider;

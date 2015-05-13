@@ -1,6 +1,6 @@
 <?php
 
-use \Mmic\Sentinelldap\Classes\LdapException;
+use \Mmic\SentinelLdap\Classes\LdapException;
 
 return [
 

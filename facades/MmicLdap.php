@@ -1,4 +1,4 @@
-<?php namespace Mmic\Sentinelldap\Facades;
+<?php namespace Mmic\SentinelLdap\Facades;
 
 
 use Illuminate\Support\Facades\Facade;

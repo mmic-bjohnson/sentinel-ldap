@@ -19,7 +19,7 @@ return [
 	|
 	*/
 
-	'name' => 'Sentinelldap',
+	'name' => 'Sentinel LDAP',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
 	|
 	*/
 
-	'slug' => 'mmic/sentinelldap',
+	'slug' => 'mmic/sentinel-ldap',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -126,8 +126,8 @@ return [
 	*/
 
 	'providers' => [
-		'Mmic\Sentinelldap\Providers\SentinelLdapServiceProvider',
-		'Mmic\Sentinelldap\Providers\MmicUsersServiceProvider',
+		'Mmic\SentinelLdap\Providers\SentinelLdapServiceProvider',
+		'Mmic\SentinelLdap\Providers\MmicUsersServiceProvider',
 	],
 
 	/*
@@ -147,7 +147,7 @@ return [
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['namespace' => 'Mmic\Sentinelldap\Controllers'], function()
+		Route::group(['namespace' => 'Mmic\SentinelLdap\Controllers'], function()
 		{
 			Route::group(['namespace' => 'Frontend'], function()
 			{
@@ -256,11 +256,11 @@ return [
 		'admin' => [
 
 			[
-				'slug'  => 'admin-mmic-sentinelldap',
-				'name'  => 'Sentinelldap',
+				'slug'  => 'admin-mmic-sentinel-ldap',
+				'name'  => 'Sentinel LDAP',
 				'class' => 'fa fa-circle-o',
-				'uri'   => 'sentinelldap',
-				'regex' => '/:admin\/sentinelldap/i',
+				'uri'   => 'sentinel-ldap',
+				'regex' => '/:admin\/sentinel-ldap/i',
 			],
 
 		],

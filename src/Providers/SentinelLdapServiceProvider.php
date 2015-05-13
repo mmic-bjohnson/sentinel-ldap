@@ -1,4 +1,4 @@
-<?php namespace Mmic\Sentinelldap\Providers;
+<?php namespace Mmic\SentinelLdap\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -10,7 +10,7 @@ use App;
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 
-use Mmic\Sentinelldap\Classes\SentinelLdap;
+use Mmic\SentinelLdap\Classes\SentinelLdap;
 
 class SentinelLdapServiceProvider extends SentinelServiceProvider {
 
@@ -27,7 +27,7 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 		
 		App::bind('MmicLdap', function()
 		{
-			return new \Mmic\Sentinelldap\Classes\SentinelLdapManager(App::make('sentinel'));
+			return new \Mmic\SentinelLdap\Classes\SentinelLdapManager(App::make('sentinel'));
 		});
 		
 		$this->registerSentinel();
