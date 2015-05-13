@@ -1,5 +1,5 @@
 {
-	"name": "mmic/sentinelldap",
+	"name": "mmic/sentinel-ldap",
 	"type": "platform-extension",
 	"description": "Adds LDAP for Active Directory functionality to Cartalyst Sentinel",
 	"authors": [
@@ -31,7 +31,7 @@
 			"src/Repositories"
 		],
 		"psr-4": {
-			"Mmic\\Sentinelldap\\": "src/"
+			"Mmic\\SentinelLdap\\": "src/"
 		}
 	},
 	"minimum-stability": "dev",
