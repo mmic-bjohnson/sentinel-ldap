@@ -1,5 +1,6 @@
 {
     "name": "roshangautam/sentinel-ldap",
+	"type": "platform-extension",
     "description": "",
     "authors": [
         {
@@ -24,5 +25,6 @@
             "Roshangautam\\Sentinel\\Addons\\Ldap\\": "src/"
         }        
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+	"prefer-stable": true
 }
