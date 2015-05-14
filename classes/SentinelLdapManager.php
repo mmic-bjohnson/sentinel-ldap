@@ -23,7 +23,8 @@ public function authenticate($credentials, $remember = false)
 		//The default implementation checks the user's credentials and then logs
 		//the user in automatically if the credentials are valid. Our use-case
 		//requires only that the credentials are checked for validity; we handle
-		//the actual login elsewhere.
+		//the actual login elsewhere (because we need to create a local account
+		//for the user if one doesn't already exist).
 		
 		#$user = $this->sentinel->findByCredentials($credentials);
 		
