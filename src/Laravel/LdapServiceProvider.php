@@ -1,5 +1,7 @@
 <?php namespace Roshangautam\Sentinel\Addons\Ldap\Laravel;
 
+use Illuminate\Foundation\AliasLoader;
+
 use Roshangautam\Sentinel\Addons\Ldap\Manager;
 
 class LdapServiceProvider extends \Illuminate\Support\ServiceProvider {
@@ -29,8 +31,12 @@ class LdapServiceProvider extends \Illuminate\Support\ServiceProvider {
 		);
 		
 		$this->registerSentinelLdap();
+		
+		AliasLoader::getInstance()->alias(
+			'LDAP',
+			'Roshangautam\Sentinel\Addons\Ldap\Laravel\Facades\Ldap'
+		);
 	}
-
 
 	/**
 	 * Registers Sentinel LDAP.
