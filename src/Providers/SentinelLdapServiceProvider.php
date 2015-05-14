@@ -17,8 +17,10 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register()
+	public function boot()
 	{
+		parent::boot();
+		
 		$this->mergeConfigFrom(
 			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
 		);

@@ -61,9 +61,9 @@ public function authenticate($credentials, $remember = false, $login = true)
 		else {
 			//The credentials are valid.
 			
-			$userInfo = MmicLdap::search($credentials['email']);
+			#$userInfo = MmicLdap::search($credentials['email']);
 			
-			dd($userInfo);
+			#dd($userInfo);
 			
 			$user = $this->users->findByCredentials(['email' => $credentials['email']]);
 			

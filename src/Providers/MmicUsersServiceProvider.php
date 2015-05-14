@@ -6,9 +6,9 @@ use Platform\Users\Providers\UsersServiceProvider;
 class MmicUsersServiceProvider extends UsersServiceProvider
 {
 
-public function register()
+public function boot()
 {
-	parent::register();
+	parent::boot();
 	
 	//Override the default authentication repository binding (we require
 	//custom logic in ours).
