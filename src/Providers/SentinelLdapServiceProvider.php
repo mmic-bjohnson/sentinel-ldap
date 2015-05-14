@@ -1,7 +1,6 @@
 <?php namespace Mmic\SentinelLdap\Providers;
 
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 
 use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;

@@ -87,13 +87,6 @@ public function authenticate($credentials, $remember = false, $login = true)
 				
 				$role->users()->attach($user);
 			}
-			else {
-				//If the user already has a Sentinel account, update the associated
-				//password to match the value in Active Directory (otherwise,
-				//Sentinel's built-in login mechanism will not work correctly).
-				
-				#$this->update($user, $credentials);
-			}
 			
 			try {
 				if (!$this->login($user, true)) {
