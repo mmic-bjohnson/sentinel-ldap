@@ -47,11 +47,11 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 			// -CBJ 2015.04.28.
 			
 			$sentinel = new SentinelLdap(
-					$app['sentinel.persistence'],
-					$app['sentinel.users'],
-					$app['sentinel.roles'],
-					$app['sentinel.activations'],
-					$app['events']
+				$app['sentinel.persistence'],
+				$app['sentinel.users'],
+				$app['sentinel.roles'],
+				$app['sentinel.activations'],
+				$app['events']
 			);
 			if (isset($app['sentinel.checkpoints'])) {
 				foreach ($app['sentinel.checkpoints'] as $key => $checkpoint) {
