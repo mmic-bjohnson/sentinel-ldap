@@ -2,12 +2,8 @@
 
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\AliasLoader;
 
-use App\Providers;
-
-use App;
-
-use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 
 use Mmic\SentinelLdap\Classes\SentinelLdap;
@@ -25,16 +21,21 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
 		);
 		
+		$this->registerSentinel();
+		
 		//Bind the facade for the SentinelLdapManager class.
 		
-		App::bind('MmicLdap', function()
+		$this->app->bind('MmicLdap', function()
 		{
-			return new \Mmic\SentinelLdap\Classes\SentinelLdapManager(App::make('sentinel'));
+			return new \Mmic\SentinelLdap\Classes\SentinelLdapManager($this->app['sentinel']);
 		});
 		
-		$this->registerSentinel();
+		AliasLoader::getInstance()->alias(
+			'MmicLdap',
+			'Mmic\SentinelLdap\Facades\MmicLdap'
+		);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */

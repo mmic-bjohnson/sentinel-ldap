@@ -22,11 +22,10 @@
 	},
 	"autoload": {
 		"classmap": [
-			"database/migrations",
-			"database/seeds",
+			"database",
 			"classes",
-			"facades",
 			"src/Controllers",
+			"src/Facades",
 			"src/Exceptions",
 			"src/Repositories"
 		],
