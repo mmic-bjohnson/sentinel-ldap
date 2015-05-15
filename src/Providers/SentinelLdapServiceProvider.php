@@ -7,7 +7,8 @@ use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 
 use Mmic\SentinelLdap\Classes\SentinelLdap;
 
-class SentinelLdapServiceProvider extends SentinelServiceProvider {
+class SentinelLdapServiceProvider extends SentinelServiceProvider
+{
 
 	/**
 	 * {@inheritDoc}
@@ -15,10 +16,6 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 	public function boot()
 	{
 		parent::boot();
-		
-		$this->mergeConfigFrom(
-			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
-		);
 		
 		$this->registerSentinel();
 		
@@ -32,6 +29,15 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider {
 		AliasLoader::getInstance()->alias(
 			'MmicLdap',
 			'Mmic\SentinelLdap\Facades\MmicLdap'
+		);
+	}
+	
+	public function register()
+	{
+		parent::register();
+		
+		$this->mergeConfigFrom(
+			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
 		);
 	}
 	
