@@ -41,15 +41,19 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider
 		);
 	}
 	
-	#public function register()
-	#{
+	public function register()
+	{
 		//XXX TODO
-		//When this line is un-commented, our custom classes are loaded, even
-		//if the extension is disabled or uninstalled! I'd love to know why!
+		
+		//When the parent method is called, whether via parent::register() or
+		//by not defining this empty override method, our custom classes are
+		//loaded, even if the extension is disabled or uninstalled!
+		//I'd love to know why!
+		//
 		//-CBJ 2015.05.15
 		
 		#parent::register();
-	#}
+	}
 	
 	/**
 	 * {@inheritDoc}
