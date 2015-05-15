@@ -15,7 +15,16 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider
 	 */
 	public function boot()
 	{
-		parent::boot();
+		//Traditionally, all of this is done within the register() method, but
+		//when extending classes (e.g., "class SentinalLdap extends Sentinel {"),
+		//it is necessary to move this logic into the boot method. Absent this
+		//measure, the overrides are effective even when this extension is
+		//disabled or uninstalled (because the register() method is called
+		//no matter what, whereas boot() is called only for active extensions).
+		
+		$this->mergeConfigFrom(
+			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
+		);
 		
 		$this->registerSentinel();
 		
@@ -32,14 +41,15 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider
 		);
 	}
 	
-	public function register()
-	{
-		parent::register();
+	#public function register()
+	#{
+		//XXX TODO
+		//When this line is un-commented, our custom classes are loaded, even
+		//if the extension is disabled or uninstalled! I'd love to know why!
+		//-CBJ 2015.05.15
 		
-		$this->mergeConfigFrom(
-			base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
-		);
-	}
+		#parent::register();
+	#}
 	
 	/**
 	 * {@inheritDoc}

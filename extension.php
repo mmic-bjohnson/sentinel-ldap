@@ -7,6 +7,26 @@ use Cartalyst\Permissions\Container as Permissions;
 
 use Mmic\Controllers\Frontend;
 
+//Don't even load the providers if the extension is disabled. This is the only
+//means by which to prevent our class overrides from being effective, as the
+//classes seem to be loaded even when the extension is disabled or uninstalled).
+//-CBJ 2015.05.15.
+/*
+$providers = [
+	'Mmic\SentinelLdap\Providers\SentinelLdapServiceProvider',
+	'Mmic\SentinelLdap\Providers\MmicUsersServiceProvider',
+];
+
+$extension = DB::table('extensions')
+	->select('enabled')
+	->where('slug', '=', 'mmic/sentinel-ldap')
+	->first();
+
+if ($extension === NULL || $extension->enabled !== 1) {
+	$providers = [];
+}
+*/
+
 return [
 
 	/*
