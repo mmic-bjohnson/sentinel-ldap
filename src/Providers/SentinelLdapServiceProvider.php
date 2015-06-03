@@ -53,6 +53,13 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider
 		//-CBJ 2015.05.15
 		
 		#parent::register();
+		
+		$this->commands('Mmic\SentinelLdap\Console\Commands\PopulateUsers');
+		
+		$this->app->singleton('LdapUtility', function($app)
+		{
+			return new LdapUtility;
+		});
 	}
 	
 	/**

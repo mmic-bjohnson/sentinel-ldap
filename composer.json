@@ -24,10 +24,7 @@
 		"classmap": [
 			"database",
 			"classes",
-			"src/Controllers",
-			"src/Facades",
-			"src/Exceptions",
-			"src/Repositories"
+			"src/"
 		],
 		"psr-4": {
 			"Mmic\\SentinelLdap\\": "src/"
