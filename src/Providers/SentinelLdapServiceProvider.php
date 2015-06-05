@@ -39,6 +39,15 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider
 			'MmicLdap',
 			'Mmic\SentinelLdap\Facades\MmicLdap'
 		);
+		
+		$this->app['config']->set('roshangautam.sentinel-ldap.search_password', $_ENV['LDAP_SEARCH_PASSWORD']);
+		
+		$this->commands('Mmic\SentinelLdap\Console\Commands\PopulateUsers');
+		
+		$this->app->singleton('LdapUtility', function($app)
+		{
+			return new LdapUtility;
+		});
 	}
 	
 	public function register()
@@ -53,13 +62,6 @@ class SentinelLdapServiceProvider extends SentinelServiceProvider
 		//-CBJ 2015.05.15
 		
 		#parent::register();
-		
-		$this->commands('Mmic\SentinelLdap\Console\Commands\PopulateUsers');
-		
-		$this->app->singleton('LdapUtility', function($app)
-		{
-			return new LdapUtility;
-		});
 	}
 	
 	/**
