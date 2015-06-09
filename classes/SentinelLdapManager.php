@@ -18,6 +18,8 @@ public function authenticate($credentials, $remember = false)
 {
 	$config = config('roshangautam.sentinel-ldap');
 	
+	$extendedConfig = config('mmic.sentinel-ldap');
+	
 	if ($conn = $this->connect($config['host'], $config['port'])) {
 		
 		//The default implementation checks the user's credentials and then logs
@@ -31,7 +33,7 @@ public function authenticate($credentials, $remember = false)
 		ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 		
 		try {
-			$valid = ldap_bind($conn, $credentials['email'], $credentials['password']);
+			$valid = ldap_bind($conn, $credentials['username'] . $extendedConfig['authentication_domain'], $credentials['password']);
 			
 			if ($valid) {
 				#$this->login($user, $remember);
