@@ -63,7 +63,7 @@ public function fire()
 		}
 		
 		if ($this->numFailures > 0) {
-			$this->error($this->numFailures . ' users failed to be created (due to some unexpected failure condition');
+			$this->error($this->numFailures . ' users failed to be created (due to some unexpected failure condition)');
 		}
 	}
 }
@@ -84,92 +84,37 @@ public function createUsers()
 	if (!empty($usernames)) {
 		$this->info(count($usernames) . ' usernames were retrieved');
 		
-		$this->info('Connecting to LDAP server ' . $this->config['host'] . ' to validate usernames...');
+		#$this->info('Connecting to LDAP server ' . $this->config['host'] . ' to validate usernames...');
 		
-		$ldap = ldap_connect($this->config['host']);
+		#$bind = connectToLdap();
 		
-		if ($ldap === false) {
-			$this->error('Could not create an LDAP link identifier (ensure that the initialization parameters are valid)');
-			
-			return false;
-		}
-		
-		ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-		ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
-		
-		define('LDAP_OPT_DIAGNOSTIC_MESSAGE', '0x0032');
-		
-		$bind = ldap_bind($ldap, $this->config['search_user_dn'], $this->config['search_password']);
-		
-		if ($bind) {
-			$this->info('Connection to LDAP server established successfully');
+		#if ($bind) {
+			#$this->info('Connection to LDAP server established successfully');
 			
 			$this->info('Looking-up usernames...');
 			
 			foreach ($usernames as $username) {
 				$this->info('Looking-up "' . $username . '"...');
 				
-				$filter="(sAMAccountName=$username)";
+				$userId = $this->ldapUtility->createOrUpdateSentinelUser($username);
 				
-				$result = ldap_search($ldap, $this->config['search_base'],$filter);
+				var_dump($userId);
 				
-				if ($result === false) {
-					$this->error('Call to ldap_search() failed');
+				if (empty($userId)) {
+					$this->error('Sentinel account could not be created for user "' . $username . '"');
 					
-					return false;
-				}
-				
-				ldap_sort($ldap, $result, 'sn');
-				
-				$info = ldap_get_entries($ldap, $result);
-				
-				$entry = $this->ldapUtility->cleanUpEntry($info);
-				
-				//Each $entry is keyed by its DN (Distinguished Name), which isn't
-				//very helpful. A simple reset() will get us to the data (there
-				//is only one item in the array).
-				
-				$e = reset($entry);
-				
-				//Ensure that values for surname, given name (first name), and
-				//SAM account name are present (all are required in this context).
-				
-				if (!empty($e['sn']) && !empty($e['givenname']) && !empty($e['samaccountname'])) {
-					//Create the account (if it doesn't already exist).
-					
-					$this->info('Found user "' . $username . '" to have real name "' . $e['sn'] . ', ' . $e['givenname'] . '"');
-					
-					$this->info('Creating (or updating existing) Sentinel account for user...');
-					
-					try {
-						$this->ldapUtility->createSentinelUser($username . '@medicalmutual.com', $e['givenname'], $e['sn']);
-						
-						$this->numSuccesses++;
-					}
-					catch (\Exception $e) {
-						$this->error('Sentinel account could not be created for user "' . $username . '"');
-						
-						$this->numFailures++;
-					}
+					$this->numFailures++;
 				}
 				else {
-					$this->comment('Could not find a usable record for this LDAP account, skipping');
-					
-					$this->numSkips++;
+					$this->numSuccesses++;
 				}
+				
+				break;
 			}
 			
-			ldap_unbind($ldap);
-		}
-		else {
-			if (ldap_get_option($ldap, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error)) {
-				$this->error("Error binding to LDAP: $extended_error");
-			} else {
-				$this->error('Error binding to LDAP: No additional information is available');
-			}
-			
-			return false;
-		}
+			$this->ldapUtility->unbind();
+		#}
+		
 	}
 	else {
 		$this->error('The list of usernames could not be parsed; ensure that the file exists, is readable, and contains one username per line');
