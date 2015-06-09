@@ -31,7 +31,7 @@ public function authenticate($credentials, $remember = false, $login = true)
 		//utilize checkpoints and throttling).
 		
 		$user = $this->users->findByCredentials([
-			'login' => $credentials['email'],
+			'login' => $credentials['username'],
 		]);
 		
 		//The default implementation only checks that the supplied password
@@ -61,32 +61,9 @@ public function authenticate($credentials, $remember = false, $login = true)
 		else {
 			//The credentials are valid.
 			
-			#$userInfo = MmicLdap::search($credentials['email']);
+			$userId = $this->ldapUtility->createOrUpdateSentinelUser($credentials['username']);
 			
-			#dd($userInfo);
-			
-			$user = $this->users->findByCredentials(['email' => $credentials['email']]);
-			
-			//If the user does not yet have a Sentinel account, create one.
-			
-			if (empty($user)) {
-				$newUser = $this->create(
-					[
-						'email' => $credentials['email'],
-						#'password' => $credentials['password'],
-					]
-				);
-				
-				$user = $this->users->findById($newUser->id);
-				
-				$activation = $this->activations->create($user);
-				
-				$wasActivated = $this->activations->complete($user, $activation->code);
-				
-				$role = $this->findRoleBySlug('staff');
-				
-				$role->users()->attach($user);
-			}
+			$user = $this->users->findByCredentials(['id' => $userId]);
 			
 			try {
 				if (!$this->login($user, true)) {
