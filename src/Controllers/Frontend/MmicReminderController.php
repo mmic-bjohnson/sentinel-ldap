@@ -11,7 +11,7 @@ class MmicReminderController extends ReminderController {
 
 public function index()
 {
-	return view('mmic/sentinelldap::auth/password_reminder', compact('connections'));
+	return view('mmic/sentinel-ldap::auth/password_reminder', compact('connections'));
 }
 
 }

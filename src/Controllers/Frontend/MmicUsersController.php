@@ -13,7 +13,7 @@ public function login()
 {
 	$connections = $this->users->auth()->getSocialConnections();
 
-	return view('mmic/sentinelldap::auth/login', compact('connections'));
+	return view('mmic/sentinel-ldap::auth/login', compact('connections'));
 }
 
 }
