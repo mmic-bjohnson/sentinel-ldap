@@ -98,8 +98,6 @@ public function createUsers()
 				
 				$userId = $this->ldapUtility->createOrUpdateSentinelUser($username);
 				
-				var_dump($userId);
-				
 				if (empty($userId)) {
 					$this->error('Sentinel account could not be created for user "' . $username . '"');
 					
@@ -108,8 +106,6 @@ public function createUsers()
 				else {
 					$this->numSuccesses++;
 				}
-				
-				break;
 			}
 			
 			$this->ldapUtility->unbind();

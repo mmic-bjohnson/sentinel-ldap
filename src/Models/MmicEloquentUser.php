@@ -1,9 +1,8 @@
 <?php namespace Mmic\SentinelLdap\Models;
 
 
-#use Illuminate\Database\Eloquent\Model;
-
 use Cartalyst\Sentinel\Users\EloquentUser;
+use Cartalyst\Sentinel\Users\UserInterface;
 
 class MmicEloquentUser extends EloquentUser {
 

@@ -6,6 +6,8 @@ use \App;
 use \Sentinel;
 use \Activation;
 
+use \Mmic\SentinelLdap\Models\UserDetails;
+
 class LdapUtility
 {
 
@@ -74,67 +76,43 @@ public function createOrUpdateSentinelUser($username)
 {
 	//Lookup the user's account in LDAP.
 	
-	$entry = $this->lookupUserDetails($username);
+	$ldapEntry = $this->lookupUserDetails($username);
 	
 	//Each $entry is keyed by its DN (Distinguished Name), which isn't
 	//very helpful. A simple reset() will get us to the data (there
 	//is only one item in the array).
 	
-	$e = reset($entry);
+	$ldapEntry = reset($ldapEntry);
 	
 	//Ensure that values for surname, given name (first name), SAM account name
 	//Active Directory GUID, and email are present (all are required in this context).
 	
-	if (!empty($e['sn']) && !empty($e['givenname']) && !empty($e['samaccountname']) && !empty($e['objectguid']) && !empty($e['mail'])) {
+	if (!empty($ldapEntry['sn']) && !empty($ldapEntry['givenname']) && !empty($ldapEntry['samaccountname']) && !empty($ldapEntry['objectguid']) && !empty($ldapEntry['mail'])) {
+		//If the user does not yet have a Sentinel account, in which case this
+		//call will return an empty value, create an account.
+		
 		$credentials = Sentinel::findByCredentials(['samAccountName' => $username]);
 		
-		if (empty($credentials)) {
-			//If the user does not yet have a Sentinel account, create one.
+		//But, before we do that, we need to check to see if this GUID
+		//already exists. If it does, it means that this individual's
+		//username was changed in LDAP, in which case it must be updated here.
+		//(Marriage is the most common scenario under which this would occur.)
+		
+		$userDetails = UserDetails::where('guid', $this->guidToString($ldapEntry['objectguid']))->first();
+		
+		if (empty($credentials) && empty($userDetails)) {
 			
-			$newUser = Sentinel::create(
-				[
-					'email' => $e['mail'],
-					'first_name' => $e['givenname'],
-					'last_name' => $e['sn'],
-					//Custom values that Sentinel does not define.
-					'guid' => $this->guidToString($e['objectguid']),
-					'samAccountName' => $e['samaccountname'],
-				]
-			);
+			//This user does not have a Sentinal account.
 			
-			$user = Sentinel::findById($newUser->id);
-			
-			//Activate the user automatically.
-			
-			$activation = Activation::create($user);
-			
-			$wasActivated = Activation::complete($user, $activation->code);
-			
-			//Assign the user to a conservative role (additional roles and/or
-			//permissions can be granted later, as needed).
-			
-			$role = Sentinel::findRoleBySlug('staff');
-			
-			$role->users()->attach($user);
-			
-			return $newUser->id;
+			return $this->createSentinelUser($ldapEntry);
 		}
 		else {
-			//If the user already has an account, update it with the latest LDAP
+			//The user already has an account; update it with the latest LDAP
 			//information.
 			
-			$credentialsNew = [
-				'email' => $e['mail'],
-				'first_name' => $e['givenname'],
-				'last_name' => $e['sn'],
-				//Custom values that Sentinel does not define.
-				'guid' => $this->guidToString($e['objectguid']),
-				'samAccountName' => $e['samaccountname'],
-			];
+			$credentials = Sentinel::findById($userDetails->sentinelId);
 			
-			$user = Sentinel::update($credentials, $credentialsNew);
-			
-			return $user->id;
+			return $this->updateSentinelUser($credentials, $ldapEntry);
 		}
 	}
 	else {
@@ -255,6 +233,52 @@ public function unbind()
 	else {
 		return true;
 	}
+}
+
+public function createSentinelUser($ldapEntry)
+{
+	$newUser = Sentinel::create(
+		[
+			'email' => $ldapEntry['mail'],
+			'first_name' => $ldapEntry['givenname'],
+			'last_name' => $ldapEntry['sn'],
+			//Custom values that Sentinel does not define.
+			'guid' => $this->guidToString($ldapEntry['objectguid']),
+			'samAccountName' => $ldapEntry['samaccountname'],
+		]
+	);
+	
+	$user = Sentinel::findById($newUser->id);
+	
+	//Activate the user automatically.
+	
+	$activation = Activation::create($user);
+	
+	$wasActivated = Activation::complete($user, $activation->code);
+	
+	//Assign the user to a conservative role (additional roles and/or
+	//permissions can be granted later, as needed).
+	
+	$role = Sentinel::findRoleBySlug('staff');
+	
+	$role->users()->attach($user);
+	
+	return $newUser->id;
+}
+
+public function updateSentinelUser($credentials, $ldapEntry)
+{
+	$credentialsNew = [
+		'email' => $ldapEntry['mail'],
+		'first_name' => $ldapEntry['givenname'],
+		'last_name' => $ldapEntry['sn'],
+		//Custom values that Sentinel does not define.
+		'samAccountName' => $ldapEntry['samaccountname'],
+	];
+	
+	$user = Sentinel::update($credentials, $credentialsNew);
+	
+	return $user->id;
 }
 
 }

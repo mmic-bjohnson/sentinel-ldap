@@ -6,6 +6,7 @@ use Illuminate\Foundation\AliasLoader;
 use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 
 use Mmic\SentinelLdap\Classes\SentinelLdap;
+use Mmic\SentinelLdap\Utility\LdapUtility;
 
 class SentinelLdapServiceProvider extends SentinelServiceProvider
 {
@@ -112,6 +113,36 @@ public function register()
  */
 protected function registerSentinel()
 {
+	//Suhayb Wardany at Cartalyst (@suwardany on GitHub) concoted this whole
+	//block when I asked him how to replace the Sentinel user model with a
+	//custom model (required for user info to span multiple tables). I don't
+	//yet fully understand how this works, but, hey, it works. :)
+	//
+	//-CBJ 2015.06.10.
+	
+	$this->app['sentinel.users'] = $this->app->share(function ($app) {
+		$config = $app['config']->get('cartalyst.sentinel');
+		
+		$users        = array_get($config, 'users.model');
+		$roles        = array_get($config, 'roles.model');
+		$persistences = array_get($config, 'persistences.model');
+		$permissions  = array_get($config, 'permissions.class');
+		
+		if (class_exists($roles) && method_exists($roles, 'setUsersModel')) {
+			forward_static_call_array([$roles, 'setUsersModel'], [$users]);
+		}
+		
+		if (class_exists($persistences) && method_exists($persistences, 'setUsersModel')) {
+			forward_static_call_array([$persistences, 'setUsersModel'], [$users]);
+		}
+		
+		if (class_exists($users) && method_exists($users, 'setPermissionsClass')) {
+			forward_static_call_array([$users, 'setPermissionsClass'], [$permissions]);
+		}
+		
+		return new \Mmic\SentinelLdap\Repositories\MmicIlluminateUserRepository($app['sentinel.hasher'], $app['events'], $users);
+	});
+	
 	$this->app['sentinel'] = $this->app->share(function ($app) {
 		
 		// This is the only line that I changed from the stock implementation.
@@ -123,7 +154,8 @@ protected function registerSentinel()
 			$app['sentinel.users'],
 			$app['sentinel.roles'],
 			$app['sentinel.activations'],
-			$app['events']
+			$app['events'],
+			$app->make('Mmic\SentinelLdap\Utility\LdapUtility')
 		);
 		if (isset($app['sentinel.checkpoints'])) {
 			foreach ($app['sentinel.checkpoints'] as $key => $checkpoint) {
