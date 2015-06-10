@@ -3,19 +3,12 @@
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Activation;
 
-#use BadMethodCallException;
 use Cartalyst\Sentinel\Activations\ActivationRepositoryInterface;
-#use Cartalyst\Sentinel\Checkpoints\CheckpointInterface;
 use Cartalyst\Sentinel\Persistences\PersistenceRepositoryInterface;
-#use Cartalyst\Sentinel\Reminders\ReminderRepositoryInterface;
 use Cartalyst\Sentinel\Roles\RoleRepositoryInterface;
 use Cartalyst\Sentinel\Users\UserInterface;
 use Cartalyst\Sentinel\Users\UserRepositoryInterface;
-#use Cartalyst\Support\Traits\EventTrait;
-#use Closure;
 use Illuminate\Events\Dispatcher;
-#use InvalidArgumentException;
-#use RuntimeException;
 
 use App;
 use Alert;
