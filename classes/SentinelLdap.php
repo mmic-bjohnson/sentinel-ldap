@@ -3,14 +3,50 @@
 use Cartalyst\Sentinel\Sentinel;
 use Cartalyst\Sentinel\Activation;
 
+#use BadMethodCallException;
+use Cartalyst\Sentinel\Activations\ActivationRepositoryInterface;
+#use Cartalyst\Sentinel\Checkpoints\CheckpointInterface;
+use Cartalyst\Sentinel\Persistences\PersistenceRepositoryInterface;
+#use Cartalyst\Sentinel\Reminders\ReminderRepositoryInterface;
+use Cartalyst\Sentinel\Roles\RoleRepositoryInterface;
+use Cartalyst\Sentinel\Users\UserInterface;
+use Cartalyst\Sentinel\Users\UserRepositoryInterface;
+#use Cartalyst\Support\Traits\EventTrait;
+#use Closure;
+use Illuminate\Events\Dispatcher;
+#use InvalidArgumentException;
+#use RuntimeException;
+
 use App;
 use Alert;
 use Log;
 
 use MmicLdap;
 
+use Mmic\SentinelLdap\Utility\LdapUtility;
+
 class SentinelLdap extends Sentinel
 {
+
+public function __construct(
+	PersistenceRepositoryInterface $persistences,
+	UserRepositoryInterface $users,
+	RoleRepositoryInterface $roles,
+	ActivationRepositoryInterface $activations,
+	Dispatcher $dispatcher,
+	LdapUtility $ldapUtility
+)
+{
+	parent::__construct(
+		$persistences,
+		$users,
+		$roles,
+		$activations,
+		$dispatcher
+	);
+	
+	$this->ldapUtility = $ldapUtility;
+}
 
 /**
  * {@inheritDoc}
