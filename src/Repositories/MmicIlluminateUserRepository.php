@@ -28,9 +28,11 @@ public function findByCredentials(array $credentials)
 	//
 	//-CBJ 2015.06.10.
 	
+	$table = with(new UserDetails)->getTable();
+	
 	$query
-		->join('user_details', 'users.id', '=', 'user_details.sentinelId')
-		->select('users.*', 'user_details.guid', 'user_details.samAccountName');
+		->join($table, 'users.id', '=', $table . '.sentinelId')
+		->select('users.*', $table . '.guid', $table . '.samAccountName');
 	
 	if (is_array($logins)) {
 		foreach ($logins as $key => $value) {

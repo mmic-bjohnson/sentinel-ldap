@@ -3,9 +3,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserDetails extends Model {
+use MmDb;
 
-protected $table = 'user_details';
+class UserDetails extends Model {
 
 protected $fillable = [
 	'guid',
@@ -15,6 +15,11 @@ protected $fillable = [
 protected $primaryKey = 'sentinelId';
 
 public $incrementing = false;
+
+public function __construct()
+{
+	$this->table = MmDb::getDbPrefix() . 'user_details';
+}
 
 public function user()
 {
