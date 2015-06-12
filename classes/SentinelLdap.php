@@ -92,7 +92,7 @@ public function authenticate($credentials, $remember = false, $login = true)
 			
 			$userId = $this->ldapUtility->createOrUpdateSentinelUser($credentials['username']);
 			
-			$user = $this->users->findByCredentials(['id' => $userId]);
+			$user = $this->users->findById($userId);
 			
 			try {
 				if (!$this->login($user, true)) {
