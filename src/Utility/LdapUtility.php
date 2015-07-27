@@ -98,7 +98,7 @@ public function createOrUpdateSentinelUser($username)
 		//username was changed in LDAP, in which case it must be updated here.
 		//(Marriage is the most common scenario under which this would occur.)
 		
-		$userDetails = UserDetails::where('guid', $this->guidToString($ldapEntry['objectguid']))->first();
+		$userDetails = (new UserDetails)->where('guid', $this->guidToString($ldapEntry['objectguid']))->first();
 		
 		if (empty($credentials) && empty($userDetails)) {
 			
@@ -272,11 +272,19 @@ public function updateSentinelUser($credentials, $ldapEntry)
 		'email' => $ldapEntry['mail'],
 		'first_name' => $ldapEntry['givenname'],
 		'last_name' => $ldapEntry['sn'],
-		//Custom values that Sentinel does not define.
-		'samAccountName' => $ldapEntry['samaccountname'],
 	];
 	
 	$user = Sentinel::update($credentials, $credentialsNew);
+	
+	//TODO The samAccountName value lives in a different DB table, so to update
+	//it, we either need to create a relationship via the model, or we need to
+	//update a separate model instance (in which case it would be nice if the
+	//write operations were performed within a single transaction).
+	//
+	//-CBJ 2015.07.27.
+	
+	//Custom values that Sentinel does not define.
+	#'samAccountName' => $ldapEntry['samaccountname'],
 	
 	return $user->id;
 }
