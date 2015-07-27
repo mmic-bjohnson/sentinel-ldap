@@ -108,11 +108,11 @@ public function update($user, array $credentials)
 	//
 	//-CBJ 2015.06.10.
 	
-	$userDetails = UserDetails::find($user->id);
+	$userDetails = (new UserDetails)->find($user->id);
 	
 	$userDetails->fill($credentials);
 	
-	$userDetails = $user->userDetails()->save($userDetails);
+	$userDetails->save();
 	
 	$this->fireEvent('sentinel.user.updated', compact('user', 'credentials'));
 	
