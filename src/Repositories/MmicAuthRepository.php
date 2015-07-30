@@ -1,4 +1,4 @@
-<?php namespace Mmic\Users\Repositories;
+<?php namespace Mmic\SentinelLdap\Repositories;
 
 
 use Platform\Users\Repositories\AuthRepository;

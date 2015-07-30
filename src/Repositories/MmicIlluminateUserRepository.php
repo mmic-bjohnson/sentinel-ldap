@@ -1,10 +1,10 @@
 <?php namespace Mmic\SentinelLdap\Repositories;
 
 
-use \Cartalyst\Sentinel\Users\IlluminateUserRepository;
-use \Cartalyst\Sentinel\Users\UserInterface;
+use Cartalyst\Sentinel\Users\IlluminateUserRepository;
+use Cartalyst\Sentinel\Users\UserInterface;
 
-use \Mmic\SentinelLdap\Models\UserDetails;
+use Mmic\SentinelLdap\Models\UserDetails;
 
 class MmicIlluminateUserRepository extends IlluminateUserRepository
 {

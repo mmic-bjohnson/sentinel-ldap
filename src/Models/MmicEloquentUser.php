@@ -1,10 +1,9 @@
 <?php namespace Mmic\SentinelLdap\Models;
 
 
-use Cartalyst\Attributes\EntityInterface;
 use Platform\Users\Models\User;
 
-class MmicEloquentUser extends User implements EntityInterface {
+class MmicEloquentUser extends User {
 
 protected $loginNames = ['samAccountName'];
 

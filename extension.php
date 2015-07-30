@@ -168,7 +168,7 @@ return [
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['namespace' => 'Mmic\SentinelLdap\Controllers'], function()
+		Route::group(['namespace' => 'Mmic\SentinelLdap\Http\Controllers'], function()
 		{
 			Route::group(['namespace' => 'Frontend'], function()
 			{

@@ -5,6 +5,8 @@ use ErrorException;
 
 use Roshangautam\Sentinel\Addons\Ldap\Manager;
 
+use Mmic\SentinelLdap\Exceptions\LdapException;
+
 use App;
 use Log;
 
