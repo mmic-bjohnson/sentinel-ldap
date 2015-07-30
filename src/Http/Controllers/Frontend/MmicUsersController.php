@@ -1,4 +1,4 @@
-<?php namespace Mmic\SentinelLdap\Controllers\Frontend;
+<?php namespace Mmic\SentinelLdap\Http\Controllers\Frontend;
 
 
 use Platform\Users\Controllers\Frontend\UsersController;

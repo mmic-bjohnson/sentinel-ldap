@@ -1,4 +1,4 @@
-<?php namespace Mmic\SentinelLdap\Classes;
+<?php namespace Mmic\SentinelLdap\Exceptions;
 
 use \Exception;
 use Log;
