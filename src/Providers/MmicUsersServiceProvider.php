@@ -15,7 +15,7 @@ public function boot()
 	//Override the default authentication repository binding (we require custom
 	//logic in ours).
 	
-	$this->app->bind('platform.users.auth', 'Mmic\Users\Repositories\MmicAuthRepository');
+	$this->app->bind('platform.users.auth', 'Mmic\SentinelLdap\Repositories\MmicAuthRepository');
 	
 	
 	
