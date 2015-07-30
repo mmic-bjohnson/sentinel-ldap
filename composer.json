@@ -23,7 +23,6 @@
 	"autoload": {
 		"classmap": [
 			"database",
-			"classes",
 			"src/"
 		],
 		"psr-4": {
