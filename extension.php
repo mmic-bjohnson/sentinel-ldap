@@ -275,7 +275,7 @@ return [
 	'menus' => [
 
 		'admin' => [
-
+			/*
 			[
 				'slug'  => 'admin-mmic-sentinel-ldap',
 				'name'  => 'Sentinel LDAP',
@@ -283,7 +283,7 @@ return [
 				'uri'   => 'sentinel-ldap',
 				'regex' => '/:admin\/sentinel-ldap/i',
 			],
-
+			*/
 		],
 
 		'main' => [
