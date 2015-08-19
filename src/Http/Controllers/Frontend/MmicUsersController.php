@@ -9,9 +9,9 @@ class MmicUsersController extends UsersController {
 /**
 * {@inheritDoc}
 */
-public function __construct(UserRepositoryInterface $userRepositoryInterface)
+public function __construct(UserRepositoryInterface $users)
 {
-	parent::__construct($userRepositoryInterface);
+	parent::__construct($users);
 }
 
 /**
