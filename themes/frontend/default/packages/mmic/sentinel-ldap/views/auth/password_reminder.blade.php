@@ -1,4 +1,4 @@
-@extends('layouts/default')
+@extends('mmic/intranet::layouts/default')
 
 {{-- Page title --}}
 @section('title')
