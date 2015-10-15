@@ -16,7 +16,7 @@ use Log;
 
 use MmicLdap;
 
-use Mmic\SentinelLdap\Utility\LdapUtility;
+use Mmic\SentinelLdap\Classes\SentinelLdapManager;
 
 class SentinelLdap extends Sentinel
 {
@@ -27,7 +27,7 @@ public function __construct(
 	RoleRepositoryInterface $roles,
 	ActivationRepositoryInterface $activations,
 	Dispatcher $dispatcher,
-	LdapUtility $ldapUtility
+	SentinelLdapManager $sentinelLdapManager
 )
 {
 	parent::__construct(
@@ -38,7 +38,7 @@ public function __construct(
 		$dispatcher
 	);
 	
-	$this->ldapUtility = $ldapUtility;
+	$this->sentinelLdapManager = $sentinelLdapManager;
 }
 
 /**
@@ -90,7 +90,7 @@ public function authenticate($credentials, $remember = false, $login = true)
 		else {
 			//The credentials are valid.
 			
-			$userId = $this->ldapUtility->createOrUpdateSentinelUser($credentials['username']);
+			$userId = $this->sentinelLdapManager->createOrUpdateSentinelUser($credentials['username']);
 			
 			$user = $this->users->findById($userId);
 			
