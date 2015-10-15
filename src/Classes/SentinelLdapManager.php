@@ -6,6 +6,7 @@ use ErrorException;
 use App;
 
 use Sentinel;
+use Activation;
 
 use Roshangautam\Sentinel\Addons\Ldap\Manager;
 
@@ -19,6 +20,7 @@ class SentinelLdapManager extends Manager
 function __construct(LdapUtility $ldapUtility)
 {
 	$this->config = config('roshangautam.sentinel-ldap');
+	$this->configExtended = config('mmic.sentinel-ldap');
 	
 	$this->ldapUtility = $ldapUtility;
 }
@@ -28,17 +30,13 @@ function __construct(LdapUtility $ldapUtility)
  */
 public function authenticate($credentials, $remember = false)
 {
-	$config = config('roshangautam.sentinel-ldap');
-	
-	$extendedConfig = config('mmic.sentinel-ldap');
-	
-	if (!$this->configIsValid($config, $extendedConfig)) {
+	if (!$this->configIsValid()) {
 		throw new ErrorException('Required configuration parameters are missing or invalid');
 		
 		return false;
 	}
 	
-	if ($conn = $this->connect($config['host'], $config['port'])) {
+	if ($conn = $this->connect($this->config['host'], $this->config['port'])) {
 		
 		//The default implementation checks the user's credentials and then logs
 		//the user in automatically if the credentials are valid. Our use-case
@@ -51,7 +49,7 @@ public function authenticate($credentials, $remember = false)
 		ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 		
 		try {
-			$valid = ldap_bind($conn, $credentials['username'] . $extendedConfig['authentication_domain'], $credentials['password']);
+			$valid = ldap_bind($conn, $credentials['username'] . $this->configExtended['authentication_domain'], $credentials['password']);
 			
 			if ($valid) {
 				#$this->login($user, $remember);
@@ -65,7 +63,7 @@ public function authenticate($credentials, $remember = false)
 			
 			$extendedError = NULL;
 			
-			ldap_get_option($conn, $config['LDAP_OPT_DIAGNOSTIC_MESSAGE'], $extendedError);
+			ldap_get_option($conn, $this->config['LDAP_OPT_DIAGNOSTIC_MESSAGE'], $extendedError);
 			
 			$this->disconnect($conn);
 			
@@ -74,7 +72,7 @@ public function authenticate($credentials, $remember = false)
 		
 	}
 	else {
-		throw new ErrorException('Could not connect to LDAP server at "' . $config['host'] . '" on port "' . $config['port'] . '" (no further information is available)');
+		throw new ErrorException('Could not connect to LDAP server at "' . $this->config['host'] . '" on port "' . $this->config['port'] . '" (no further information is available)');
 	}
 	
 	return false;
@@ -82,17 +80,15 @@ public function authenticate($credentials, $remember = false)
 
 /**
  * Perform basic checks to ensure that the configuration files have been published.
- * @param array $config The base configuration values from Roshan Gautam's library.
- * @param array $extendedConfig The extended configuration values from MMIC's library.
  * @return bool true if the configuration is usable, false if not.
  */
-public function configIsValid($config, $extendedConfig)
+public function configIsValid()
 {
 	//Host is the only parameter that is truly required in all scenarios.
 	//But we also want to alert the user if other directives have not been set
 	//explicitly (even if only to empty strings or null values).
 	
-	if (!empty($config) && !empty($config['host']) && !empty($extendedConfig)) {
+	if (!empty($this->config) && !empty($this->config['host']) && !empty($this->configExtended)) {
 		return true;
 	}
 	
@@ -107,7 +103,7 @@ public function createSentinelUser($ldapEntry)
 			'first_name' => $ldapEntry['givenname'],
 			'last_name' => $ldapEntry['sn'],
 			//Custom values that Sentinel does not define.
-			'guid' => $this->guidToString($ldapEntry['objectguid']),
+			'guid' => $this->ldapUtility->guidToString($ldapEntry['objectguid']),
 			'samAccountName' => $ldapEntry['samaccountname'],
 		]
 	);
@@ -120,10 +116,10 @@ public function createSentinelUser($ldapEntry)
 	
 	$wasActivated = Activation::complete($user, $activation->code);
 	
-	//Assign the user to a conservative role (additional roles and/or
-	//permissions can be granted later, as needed).
+	//Assign the user to a role (additional roles and/or permissions can be
+	//granted later, as needed).
 	
-	$role = Sentinel::findRoleBySlug('staff');
+	$role = Sentinel::findRoleBySlug($this->configExtended['default_sentinel_role_slug']);
 	
 	$role->users()->attach($user);
 	
