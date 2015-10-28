@@ -7,6 +7,7 @@ use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 
 use Mmic\SentinelLdap\Classes\SentinelLdap;
 use Mmic\SentinelLdap\Utility\LdapUtility;
+use Mmic\SentinelLdap\Classes\SentinelLdapManager;
 
 class SentinelLdapServiceProvider extends SentinelServiceProvider
 {
@@ -55,7 +56,11 @@ public function boot()
 	
 	$this->app->bind('MmicLdap', function()
 	{
-		return new \Mmic\SentinelLdap\Classes\SentinelLdapManager($this->app['sentinel']);
+		return new \Mmic\SentinelLdap\Classes\SentinelLdapManager(
+			$this->app->make('Mmic\SentinelLdap\Utility\LdapUtility'),
+			$this->app->make('Mmic\SentinelLdap\Models\UserDetailsBase'),
+			$this->app->make('Platform\Users\Models\User')
+		);
 	});
 	
 	AliasLoader::getInstance()->alias(
@@ -155,7 +160,7 @@ protected function registerSentinel()
 			$app['sentinel.roles'],
 			$app['sentinel.activations'],
 			$app['events'],
-			$app->make('Mmic\SentinelLdap\Utility\LdapUtility')
+			$app->make('Mmic\SentinelLdap\Classes\SentinelLdapManager')
 		);
 		if (isset($app['sentinel.checkpoints'])) {
 			foreach ($app['sentinel.checkpoints'] as $key => $checkpoint) {

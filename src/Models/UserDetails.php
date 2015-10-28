@@ -1,25 +1,9 @@
 <?php namespace Mmic\SentinelLdap\Models;
 
 
-use Illuminate\Database\Eloquent\Model;
+use Mmic\SentinelLdap\Models\UserDetailsBase;
 
-use MmDb;
-
-class UserDetails extends Model {
-
-protected $fillable = [
-	'guid',
-	'samAccountName',
-];
-
-protected $primaryKey = 'sentinelId';
-
-public $incrementing = false;
-
-public function __construct()
-{
-	$this->table = MmDb::getDbPrefix() . 'user_details';
-}
+class UserDetails extends UserDetailsBase {
 
 public function user()
 {
