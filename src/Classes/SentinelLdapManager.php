@@ -125,13 +125,11 @@ public function createSentinelUser($ldapEntry)
 		if ($e->errorInfo[1] == 1062) {
 			//The INSERT query failed due to a key constraint violation.
 			
-			#dd($e);
-			
 			$userDetails = $this->platformUser->where('email', $ldapEntry['mail'])->first();
 			
 			if (!empty($userDetails)) {
 				$this->userDetailsBase->sentinelId = $userDetails->id;
-				$this->userDetailsBase->guid = $this->ldapUtility->guidToString($ldapEntry['mail']);
+				$this->userDetailsBase->guid = $this->ldapUtility->guidToString($ldapEntry['objectguid']);
 				$this->userDetailsBase->samAccountName = $ldapEntry['samaccountname'];
 				
 				$resultantModel = $this->userDetailsBase->save();
