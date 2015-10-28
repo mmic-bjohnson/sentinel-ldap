@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 use Mmic\SentinelLdap\Utility\LdapUtility;
+use Mmic\SentinelLdap\Classes\SentinelLdapManager;
 
 class PopulateUsers extends Command {
 
@@ -35,7 +36,10 @@ protected $description = 'Retrieves a list of usernames from a text file, querie
  *
  * @return void
  */
-public function __construct(LdapUtility $ldapUtility)
+public function __construct(
+	LdapUtility $ldapUtility,
+	SentinelLdapManager $sentinelLdapManager
+)
 {
 	parent::__construct();
 	
@@ -44,6 +48,8 @@ public function __construct(LdapUtility $ldapUtility)
 	$this->ldapUtility = $ldapUtility;
 	
 	$this->config = $this->ldapUtility->getConfig();
+	
+	$this->sentinelLdapManager = $sentinelLdapManager;
 }
 
 /**
@@ -96,7 +102,7 @@ public function createUsers()
 			foreach ($usernames as $username) {
 				$this->info('Looking-up "' . $username . '"...');
 				
-				$userId = $this->ldapUtility->createOrUpdateSentinelUser($username);
+				$userId = $this->sentinelLdapManager->createOrUpdateSentinelUser($username);
 				
 				if (empty($userId)) {
 					$this->error('Sentinel account could not be created for user "' . $username . '"');
