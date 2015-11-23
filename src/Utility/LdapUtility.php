@@ -122,8 +122,6 @@ public function connectToLdap()
 	ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
 	ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 	
-	define('LDAP_OPT_DIAGNOSTIC_MESSAGE', '0x0032');
-	
 	try {
 		$bind = ldap_bind($ldap, $this->config['search_user_dn'], $this->config['search_password']);
 		
