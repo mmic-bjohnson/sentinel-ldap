@@ -157,9 +157,11 @@ public function createSentinelUser($ldapEntry)
 	//granted later, as needed).
 	
 	try {
-		$role = Sentinel::findRoleBySlug($this->configExtended['default_sentinel_role_slug']);
-		
-		$role->users()->attach($user);
+		foreach ($this->configExtended['default_sentinel_role_slugs'] as $slug) {
+			$role = Sentinel::findRoleBySlug($slug);
+			
+			$role->users()->attach($user);
+		}
 	}
 	catch (\PDOException $e) {
 		if ($e->errorInfo[1] != 1062) {
