@@ -41,7 +41,7 @@ function __construct(
 public function authenticate($credentials, $remember = false)
 {
 	if (!$this->configIsValid()) {
-		throw new ErrorException('Required configuration parameters are missing or invalid');
+		throw new ErrorException('Required configuration parameters are missing or invalid; ensure that all required parameters are defined in the .env file and that "php artisan vendor:publish" has been executed');
 		
 		return false;
 	}
