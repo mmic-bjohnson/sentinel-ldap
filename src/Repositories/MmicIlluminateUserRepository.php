@@ -1,6 +1,8 @@
 <?php namespace Mmic\SentinelLdap\Repositories;
 
 
+use Closure;
+
 use Cartalyst\Sentinel\Users\IlluminateUserRepository;
 use Cartalyst\Sentinel\Users\UserInterface;
 
