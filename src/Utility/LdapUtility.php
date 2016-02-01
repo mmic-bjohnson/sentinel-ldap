@@ -161,7 +161,10 @@ public function lookupUserDetails($username)
 	#	return false;
 	#}
 	
-	ldap_sort($ldap, $result, 'sn');
+	//TODO Suppressed due to (undocumented) deprecation in PHP 7.
+	//-CBJ 2016.02.01
+	
+	@ldap_sort($ldap, $result, 'sn');
 	
 	$info = ldap_get_entries($ldap, $result);
 	
