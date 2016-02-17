@@ -122,6 +122,8 @@ public function createSentinelUser($ldapEntry)
 		$user = Sentinel::findById($newUser->id);
 	}
 	catch (\PDOException $e) {
+		//TODO This logic needs to be adjusted to work with PostgreSQL, too.
+		
 		if ($e->errorInfo[1] == 1062) {
 			//The INSERT query failed due to a key constraint violation.
 			
@@ -164,6 +166,8 @@ public function createSentinelUser($ldapEntry)
 		}
 	}
 	catch (\PDOException $e) {
+		//TODO This logic needs to be adjusted to work with PostgreSQL, too.
+		
 		if ($e->errorInfo[1] != 1062) {
 			return false;
 		}
@@ -225,7 +229,7 @@ public function createOrUpdateSentinelUser($username)
 		
 		if (empty($credentials) && empty($userDetails)) {
 			
-			//This user does not have a Sentinal account.
+			//This user does not have a Sentinel account.
 			
 			return $this->createSentinelUser($ldapEntry);
 		}
