@@ -82,6 +82,7 @@ public function boot()
 	//Register any console commands.
 	
 	$this->commands('Mmic\SentinelLdap\Console\Commands\PopulateUsers');
+	$this->commands('Mmic\SentinelLdap\Console\Commands\GroomUsers');
 	
 	
 	

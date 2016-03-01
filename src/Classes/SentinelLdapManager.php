@@ -201,20 +201,9 @@ public function updateSentinelUser($credentials, $ldapEntry)
 
 public function createOrUpdateSentinelUser($username)
 {
-	//Lookup the user's account in LDAP.
+	$ldapEntry = $this->fetchLdapEntry($username);
 	
-	$ldapEntry = $this->ldapUtility->lookupUserDetails($username);
-	
-	//Each $entry is keyed by its DN (Distinguished Name), which isn't
-	//very helpful. A simple reset() will get us to the data (there
-	//is only one item in the array).
-	
-	$ldapEntry = reset($ldapEntry);
-	
-	//Ensure that values for surname, given name (first name), SAM account name
-	//Active Directory GUID, and email are present (all are required in this context).
-	
-	if (!empty($ldapEntry['sn']) && !empty($ldapEntry['givenname']) && !empty($ldapEntry['samaccountname']) && !empty($ldapEntry['objectguid']) && !empty($ldapEntry['mail'])) {
+	if ($ldapEntry !== false) {
 		//If the user does not yet have a Sentinel account, in which case this
 		//call will return an empty value, create an account.
 		
@@ -245,6 +234,28 @@ public function createOrUpdateSentinelUser($username)
 	else {
 		return false;
 	}
+}
+
+public function fetchLdapEntry($username)
+{
+	//Lookup the user's account in LDAP.
+	
+	$ldapEntry = $this->ldapUtility->lookupUserDetails($username);
+	
+	//Each $entry is keyed by its DN (Distinguished Name), which isn't
+	//very helpful. A simple reset() will get us to the data (there
+	//is only one item in the array).
+	
+	$ldapEntry = reset($ldapEntry);
+	
+	//Ensure that values for surname, given name (first name), SAM account name
+	//Active Directory GUID, and email are present (all are required in this context).
+	
+	if (!empty($ldapEntry['sn']) && !empty($ldapEntry['givenname']) && !empty($ldapEntry['samaccountname']) && !empty($ldapEntry['objectguid']) && !empty($ldapEntry['mail'])) {
+		return $ldapEntry;
+	}
+	
+	return false;
 }
 
 }
