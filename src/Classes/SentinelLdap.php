@@ -92,20 +92,28 @@ public function authenticate($credentials, $remember = false, $login = true)
 			
 			$userId = $this->sentinelLdapManager->createOrUpdateSentinelUser($credentials['username']);
 			
-			$user = $this->users->findById($userId);
-			
-			try {
-				if (!$this->login($user, true)) {
-					return false;
+			if ($userId !== false) {
+				$user = $this->users->findById($userId);
+				
+				try {
+					if (!$this->login($user, true)) {
+						return false;
+					}
 				}
+				catch (LdapException $e) {
+					throw $e;
+				}
+				
+				$this->fireEvent('sentinel.authenticated', $user);
+				
+				return $this->user = $user;
 			}
-			catch (LdapException $e) {
-				throw $e;
+			else {
+				//This scenario can arise for a number of reasons, such as when
+				//a required field (e.g., email) in LDAP has not been populated.
+				
+				return false;
 			}
-			
-			$this->fireEvent('sentinel.authenticated', $user);
-			
-			return $this->user = $user;
 		}
 	}
 }
