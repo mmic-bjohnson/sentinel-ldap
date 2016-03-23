@@ -46,6 +46,10 @@ public function __construct(
  */
 public function authenticate($credentials, $remember = false, $login = true)
 {
+	//TODO What happens when $credentials doesn't contain all of the required
+	//information? We get undefined index errors, that's what!
+	//This needs to be fixed. -CBJ 2016.03.22.
+	
 	$response = $this->fireEvent('sentinel.authenticating', $credentials, true);
 	
 	if ($response === false) {
