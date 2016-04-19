@@ -79,13 +79,6 @@ public function boot()
 	
 	
 	
-	//Register any console commands.
-	
-	$this->commands('Mmic\SentinelLdap\Console\Commands\PopulateUsers');
-	$this->commands('Mmic\SentinelLdap\Console\Commands\GroomUsers');
-	
-	
-	
 	//Replace Sentinel's included user model with our custom model, which is
 	//required to be able to store user data across more than one DB table.
 	//(Thanks for this, Suhayb Wardany, over at Cartalyst!)
