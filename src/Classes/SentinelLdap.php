@@ -94,7 +94,26 @@ public function authenticate($credentials, $remember = false, $login = true)
 		else {
 			//The credentials are valid.
 			
-			$userId = $this->sentinelLdapManager->createOrUpdateSentinelUser($credentials['username']);
+			if ($this->sentinelLdapManager->shouldSkipAuthRequirement()) {
+				$credentials = Sentinel::findByCredentials(['samAccountName' => $credentials['username']]);
+				
+				//The username isn't valid (it doesn't exist in the database).
+				
+				if ($credentials === null) {
+					return false;
+				}
+				
+				$credentials = Sentinel::findById($credentials->id);
+				
+				if ($credentials === null) {
+					return false;
+				}
+				
+				$userId = $credentials->id;
+			}
+			else {
+				$userId = $this->sentinelLdapManager->createOrUpdateSentinelUser($credentials['username']);
+			}
 			
 			if ($userId !== false) {
 				$user = $this->users->findById($userId);

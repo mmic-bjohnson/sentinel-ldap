@@ -40,6 +40,10 @@ function __construct(
  */
 public function authenticate($credentials, $remember = false)
 {
+	if ($this->shouldSkipAuthRequirement()) {
+		return true;
+	}
+	
 	if (!$this->configIsValid()) {
 		throw new ErrorException('Required configuration parameters are missing or invalid; ensure that 1) all required parameters are defined in the .env file, 2) "php artisan vendor:publish" has been executed, 3) any required changes have been made to the published configuration files');
 		
@@ -123,6 +127,8 @@ public function createSentinelUser($ldapEntry)
 	}
 	catch (\PDOException $e) {
 		//TODO This logic needs to be adjusted to work with PostgreSQL, too.
+		//There is already a method that detects constraint violations DB-agnostically;
+		//it just needs to be implemented. -CBJ 2016.07.15
 		
 		if ($e->errorInfo[1] == 1062) {
 			//The INSERT query failed due to a key constraint violation.
@@ -256,6 +262,16 @@ public function fetchLdapEntry($username)
 	}
 	
 	return false;
+}
+
+public function shouldSkipAuthRequirement()
+{
+	if (env('DISABLE_LDAP_CHECK') !== null && env('DISABLE_LDAP_CHECK') === true) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 }
