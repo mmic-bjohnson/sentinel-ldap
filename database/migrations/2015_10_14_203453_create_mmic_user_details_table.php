@@ -12,13 +12,19 @@ class CreateMmicUserDetailsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('mmic_user_details', function(Blueprint $table)
-		{
-			$table->integer('sentinelId')->unsigned()->unique('uidx_sentinelId');
-			$table->string('guid')->nullable()->unique('uifx_guid');
-			$table->string('samAccountName')->nullable();
-			$table->timestamps();
-		});
+		if(!Schema::connection('mysql')->hasTable('mmic_db_patches')) {
+			Schema::create('mmic_user_details', function(Blueprint $table)
+			{
+				$table->integer('sentinelId')->unsigned()->unique('uidx_sentinelId');
+				$table->string('guid')->nullable()->unique('uifx_guid');
+				$table->string('samAccountName')->nullable();
+				$table->timestamps();
+			});
+		}
 	}
 
+	public function down()
+	{
+		
+	}
 }

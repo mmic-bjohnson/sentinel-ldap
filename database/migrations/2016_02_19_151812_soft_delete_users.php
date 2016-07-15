@@ -12,9 +12,11 @@ class SoftDeleteUsers extends Migration
      */
     public function up()
     {
-		Schema::table('users', function ($table) {
-			$table->softDeletes();
-		});
+		if(!Schema::connection('mysql')->hasColumn('users', 'updated_at') && !Schema::connection('publication')->hasColumn('users', 'deleted_at')) {
+			Schema::table('users', function ($table) {
+				$table->softDeletes();
+			});
+		}
     }
 
     /**
