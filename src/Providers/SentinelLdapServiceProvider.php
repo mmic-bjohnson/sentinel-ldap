@@ -38,7 +38,7 @@ public function boot()
 	
 	//This is a sensitive, environment-specific credential.
 	
-	$this->app['config']->set('roshangautam.sentinel-ldap.search_password', $_ENV['LDAP_SEARCH_PASSWORD']);
+	$this->app['config']->set('roshangautam.sentinel-ldap.search_password', env('LDAP_SEARCH_PASSWORD'));
 	
 	
 	
