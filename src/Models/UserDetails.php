@@ -7,7 +7,7 @@ class UserDetails extends UserDetailsBase {
 
 public function user()
 {
-	return $this->belongsTo('Mmic\SentinelLdap\Models\MmicEloquentUser', 'sentinelId', 'id');
+	return $this->belongsTo(config('mmic.sentinel-ldap.user_model', 'Cartalyst\Sentinel\Users\EloquentUser'), 'sentinelId', 'id');
 }
 
 }

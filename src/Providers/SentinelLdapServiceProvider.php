@@ -85,7 +85,7 @@ public function boot()
 	
 	//Get the user model.
 	
-	$usersModel = get_class($this->app['Mmic\SentinelLdap\Models\MmicEloquentUser']);
+	$usersModel = get_class($this->app[config('mmic.sentinel-ldap.user_model', 'Cartalyst\Sentinel\Users\EloquentUser')]);
 	
 	//Set our models within Sentinel.
 	
