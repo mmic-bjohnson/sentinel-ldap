@@ -2,7 +2,6 @@
 
 
 use ErrorException;
-use Illuminate\Database\QueryException;
 
 use App;
 
@@ -127,8 +126,10 @@ public function createSentinelUser($ldapEntry)
 	}
 	catch (\PDOException $e) {
 		//TODO This logic needs to be adjusted to work with PostgreSQL, too.
-		//There is already a method that detects constraint violations DB-agnostically;
-		//it just needs to be implemented. -CBJ 2016.07.15
+		//While we have a utility method that detects constraint violations
+		//DB-agnostically, it would create dependency upon another extension,
+		//which doesn't seem appropriate here. We should instead copy the handful
+		//of required methods into this extension. -CBJ 2017.08.18
 		
 		if ($e->errorInfo[1] == 1062) {
 			//The INSERT query failed due to a key constraint violation.
