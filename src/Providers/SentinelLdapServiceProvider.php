@@ -119,7 +119,8 @@ protected function registerSentinel()
 	//
 	//-CBJ 2015.06.10.
 	
-	$this->app['sentinel.users'] = $this->app->share(function ($app) {
+	$this->app->singleton('sentinel.users', function ($app) {
+		
 		$config = $app['config']->get('cartalyst.sentinel');
 		
 		$users        = array_get($config, 'users.model');
@@ -142,7 +143,7 @@ protected function registerSentinel()
 		return new \Mmic\SentinelLdap\Repositories\MmicIlluminateUserRepository($app['sentinel.hasher'], $app['events'], $users);
 	});
 	
-	$this->app['sentinel'] = $this->app->share(function ($app) {
+	$this->app->singleton('sentinel', function ($app){
 		
 		// This is the only line that I changed from the stock implementation.
 		// I simply changed the class reference from "Sentinel" to "SentinelLdap".
