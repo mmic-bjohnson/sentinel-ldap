@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Routing\Registrar as Router;
 use Cartalyst\Extensions\ExtensionInterface;
 use Cartalyst\Settings\Repository as Settings;
 use Cartalyst\Permissions\Container as Permissions;
@@ -105,7 +106,7 @@ return [
 	|
 	*/
 
-	'require' => [
+	'requires' => [
 		'platform/users',
 		'roshangautam/sentinel-ldap',
 	],
@@ -166,7 +167,7 @@ return [
 	|
 	*/
 
-	'routes' => function(ExtensionInterface $extension, Application $app)
+	'routes' => function (Router $router, ExtensionInterface $extension, Application $app)
 	{
 		Route::group(['namespace' => 'Mmic\SentinelLdap\Http\Controllers'], function()
 		{
