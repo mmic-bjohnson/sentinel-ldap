@@ -39,7 +39,7 @@ class LdapServiceProvider extends \Illuminate\Support\ServiceProvider {
 	 */
 	protected function registerSentinelLdap()
 	{
-		$this->app['sentinel.addons.ldap'] = $this->app->share(function($app)
+		$this->app->singleton('sentinel.addons.ldap', function ($app)
 		{
 			$manager = new Manager(
 				$app['sentinel'],
