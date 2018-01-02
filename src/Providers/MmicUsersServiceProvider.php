@@ -21,7 +21,7 @@ public function boot()
 	
 	//Change the login column from the default (email) to username.
 	
-	$this->app['config']->set('platform-users.login_columns', ['username', 'password']);
+	$this->app['config']->set('platform.users.config.login_columns', ['username', 'password']);
 }
 
 public function register()
