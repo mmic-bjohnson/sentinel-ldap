@@ -33,7 +33,7 @@ public function boot()
 	]);
 	
 	$this->mergeConfigFrom(
-		base_path() . '/extensions/roshangautam/sentinel-ldap/src/config/config.php', 'roshangautam.sentinel-ldap'
+		base_path() . '/extensions/roshangautam/sentinel-ldap/resources/config/config.php', 'roshangautam.sentinel-ldap'
 	);
 	
 	//This is a sensitive, environment-specific credential.
