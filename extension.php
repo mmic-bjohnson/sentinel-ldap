@@ -169,15 +169,14 @@ return [
 
 	'routes' => function (Router $router, ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['namespace' => 'Mmic\SentinelLdap\Http\Controllers'], function()
-		{
-			Route::group(['namespace' => 'Frontend'], function()
-			{
-				// Login
-				Route::get('login', ['as' => 'user.login', 'uses' => 'MmicUsersController@login']);
-				
-				Route::get('reminder', ['as' => 'user.password_reminder', 'uses' => 'MmicReminderController@index']);
-			});
+		Route::namespace('Mmic\SentinelLdap\Http\Controllers')
+			->group(function () {
+				Route::namespace('Frontend')
+					->group(function () {
+						Route::get('login', 'MmicUsersController@login')->name('user.login');
+						
+						Route::get('reminder', 'MmicReminderController@index')->name('user.password_reminder');
+					});
 		});
 	},
 
