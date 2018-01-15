@@ -15,12 +15,9 @@
         }
     ],    
     "require": {
-        "php": ">=5.4.0",
-		"cartalyst/composer-installers": "1.2.*",
-        "cartalyst/sentinel": "~2.0",
-        "cartalyst/support": "~1.0",
-        "illuminate/support": "5.1.*",
-		"platform/foundation": "4.0.*"
+        "php": ">=7.0",
+        "cartalyst/composer-installers": "^2.0",
+        "cartalyst/sentinel": "^2.0"
     },
     "autoload": {
         "psr-4": {
