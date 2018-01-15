@@ -3,7 +3,7 @@
 
 use Closure;
 use Cartalyst\Sentinel\Sentinel;
-use Illuminate\Events\Dispatcher;
+use Illuminate\Contracts\Events\Dispatcher;
 use Cartalyst\Support\Traits\EventTrait;
 use Cartalyst\Sentinel\Users\UserInterface;
 use Config;
@@ -25,7 +25,7 @@ class Manager {
 	 * Create a new Sentinel Ldap Manager instance.
 	 *
 	 * @param  \Cartalyst\Sentinel\Sentinel  $sentinel
-	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
+	 * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
 	public function __construct(Sentinel $sentinel, 
