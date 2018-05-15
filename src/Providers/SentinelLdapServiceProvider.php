@@ -24,8 +24,6 @@ public function boot()
 	//disabled or uninstalled (because the register() method is called
 	//no matter what, whereas boot() is called only for active extensions).
 	
-	
-	
 	//Handle configuration requirements.
 	
 	$this->publishes([
@@ -39,45 +37,6 @@ public function boot()
 	//This is a sensitive, environment-specific credential.
 	
 	$this->app['config']->set('roshangautam.sentinel-ldap.search_password', env('LDAP_SEARCH_PASSWORD'));
-	
-	
-	
-	//Call our ever-so-slightly modified version of this function, in order
-	//to be able to use our SentinelLdap class, which extends the Sentinel
-	//class.
-	
-	$this->registerSentinel();
-	
-	
-	
-	//Bind the facade for our SentinelLdapManager class (which extends Roshan
-	//Gautam's Sentinel LDAP class). We then access all of his (and our) methods
-	//using the "MmicLdap" facade, instead of his "Ldap" facade.
-	
-	$this->app->bind('MmicLdap', function()
-	{
-		return new \Mmic\SentinelLdap\Classes\SentinelLdapManager(
-			$this->app->make('Mmic\SentinelLdap\Utility\LdapUtility'),
-			$this->app->make('Mmic\SentinelLdap\Models\UserDetailsBase'),
-			$this->app->make('Platform\Users\Models\User')
-		);
-	});
-	
-	AliasLoader::getInstance()->alias(
-		'MmicLdap',
-		'Mmic\SentinelLdap\Facades\MmicLdap'
-	);
-	
-	
-	
-	//Register a utility class that our LDAP-related classes may leverage.
-	
-	$this->app->singleton('LdapUtility', function($app)
-	{
-		return new LdapUtility;
-	});
-	
-	
 	
 	//Replace Sentinel's included user model with our custom model, which is
 	//required to be able to store user data across more than one DB table.
@@ -105,6 +64,37 @@ public function register()
 	//-CBJ 2015.05.15
 	
 	#parent::register();
+	
+	//Register a utility class that our LDAP-related classes may leverage.
+	
+	$this->app->singleton('LdapUtility', function($app)
+	{
+		return new LdapUtility;
+	});
+	
+	//Bind the facade for our SentinelLdapManager class (which extends Roshan
+	//Gautam's Sentinel LDAP class). We then access all of his (and our) methods
+	//using the "MmicLdap" facade, instead of his "Ldap" facade.
+	
+	$this->app->bind('MmicLdap', function()
+	{
+		return new \Mmic\SentinelLdap\Classes\SentinelLdapManager(
+			$this->app->make('Mmic\SentinelLdap\Utility\LdapUtility'),
+			$this->app->make('Mmic\SentinelLdap\Models\UserDetailsBase'),
+			$this->app->make('Platform\Users\Models\User')
+		);
+	});
+	
+	AliasLoader::getInstance()->alias(
+		'MmicLdap',
+		'Mmic\SentinelLdap\Facades\MmicLdap'
+	);
+	
+	//Call our ever-so-slightly modified version of this function, in order
+	//to be able to use our SentinelLdap class, which extends the Sentinel
+	//class.
+	
+	$this->registerSentinel();
 }
 
 /**
