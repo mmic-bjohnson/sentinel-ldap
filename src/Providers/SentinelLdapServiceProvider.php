@@ -27,7 +27,7 @@ public function boot()
 	//Handle configuration requirements.
 	
 	$this->publishes([
-		realpath(__DIR__.'/../config/config.php') => config_path('mmic.sentinel-ldap.php'),
+		realpath(__DIR__.'/../../resources/config/config.php') => config_path('mmic.sentinel-ldap.php'),
 	]);
 	
 	$this->mergeConfigFrom(
