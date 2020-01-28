@@ -10,7 +10,15 @@ class MmicEloquentUser extends User {
 use SoftDeletes;
 
 protected $loginNames = ['samAccountName'];
-protected $fillable = ['deleted_at'	];
+
+protected $fillable = [
+	'email',
+	'password',
+	'permissions',
+	'first_name',
+	'last_name',
+	'deleted_at'
+];
 
 public function userDetails() {
 	return $this->hasOne('Mmic\SentinelLdap\Models\UserDetails', 'sentinelId', 'id');
