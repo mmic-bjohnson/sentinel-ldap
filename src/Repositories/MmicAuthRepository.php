@@ -1,6 +1,6 @@
 <?php namespace Mmic\SentinelLdap\Repositories;
 
-
+use Illuminate\Support\Arr;
 use Platform\Users\Repositories\AuthRepository;
 
 use Mmic\SentinelLdap\Exceptions\LdapException;
@@ -15,7 +15,7 @@ public function login(array $input)
 	try
 	{
 		// Should the user be remembered?
-		$remember = (bool) array_get($input, 'remember', false);
+		$remember = (bool) Arr::get($input, 'remember', false);
 		
 		// Get all the valid credentials columns
 		$credentials = array_intersect_key($input, array_flip($this->getValidLoginColumns()));
