@@ -42,7 +42,7 @@ protected $bindErrorCode;
 protected $bindErrorCodeConstant;
 
 /**
- * 
+ *
  * @param string $message
  * @param int $code
  * @param string $previousException
@@ -50,7 +50,7 @@ protected $bindErrorCodeConstant;
  * @link http://php.net/manual/en/function.ldap-errno.php#20665
  * @link http://www-01.ibm.com/support/docview.wss?uid=swg21290631
  */
-public function __construct(\Illuminate\Log\Writer $log, $message, $code, $previousException = NULL, $messageDetail = NULL)
+public function __construct($message, $code, $previousException = NULL, $messageDetail = NULL)
 {
 	parent::__construct($message, $code, $previousException);
 	

@@ -80,7 +80,7 @@ public function authenticate($credentials, $remember = false)
 			
 			$this->disconnect($conn);
 			
-			throw new LdapException(App::make('log'), $ldapErrorString, $ldapErrorNumber, $e, $extendedError);
+			throw new LdapException($ldapErrorString, $ldapErrorNumber, $e, $extendedError);
 		}
 		
 	}
@@ -267,7 +267,7 @@ public function fetchLdapEntry($username)
 
 public function shouldSkipAuthRequirement()
 {
-	if (env('DISABLE_LDAP_CHECK') !== null && env('DISABLE_LDAP_CHECK') === true) {
+	if (config('mmic.sentinel-ldap.disable_ldap_check') !== null && config('mmic.sentinel-ldap.disable_ldap_check') === true) {
 		return true;
 	}
 	else {
