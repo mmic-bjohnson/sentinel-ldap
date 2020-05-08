@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-{{{ trans('platform/users::auth/form.login.legend') }}} ::
+{!! trans('platform/users::auth/form.login.legend') !!} ::
 @parent
 @stop
 
@@ -28,23 +28,23 @@
 
 			<div class="panel panel-default">
 
-				<div class="panel-heading">{{{ trans('platform/users::auth/form.login.legend') }}}</div>
+				<div class="panel-heading">{{ trans('platform/users::auth/form.login.legend') }}</div>
 
 				<div class="panel-body">
 
 					{{-- Email Address --}}
 					<div class="form-group{{ Alert::onForm('username', ' has-error') }}">
 
-						<label class="control-label" for="username">{{{ trans('mmic/sentinel-ldap::auth/form.username') }}}</label>
+						<label class="control-label" for="username">{{ trans('mmic/sentinel-ldap::auth/form.username') }}</label>
 
-						<input class="form-control" type="username" name="username" id="username" value="{{{ Input::old('username') }}}" placeholder="{{{ trans('mmic/sentinel-ldap::auth/form.username_placeholder') }}}"
+						<input class="form-control" type="username" name="username" id="username" value="{{ Input::old('username') }}" placeholder="{{ trans('mmic/sentinel-ldap::auth/form.username_placeholder') }}"
 						required
 						autofocus
 						data-parsley-trigger="change"
-						data-parsley-error-message="{{{ trans('mmic/sentinel-ldap::auth/form.username_error') }}}">
+						data-parsley-error-message="{{ trans('mmic/sentinel-ldap::auth/form.username_error') }}">
 
 						<span class="help-block">
-							{{{ Alert::onForm('username') ?: trans('mmic/sentinel-ldap::auth/form.username_help') }}}
+							{{ Alert::onForm('username') ?: trans('mmic/sentinel-ldap::auth/form.username_help') }}
 						</span>
 
 					</div>
@@ -52,15 +52,15 @@
 					{{-- Password --}}
 					<div class="form-group{{ Alert::onForm('password', ' has-error') }}">
 
-						<label class="control-label" for="password">{{{ trans('platform/users::auth/form.password') }}}</label>
+						<label class="control-label" for="password">{{ trans('platform/users::auth/form.password') }}</label>
 
-						<input class="form-control" type="password" name="password" id="password" placeholder="{{{ trans('platform/users::auth/form.password_placeholder') }}}"
+						<input class="form-control" type="password" name="password" id="password" placeholder="{!! trans('platform/users::auth/form.password_placeholder') !!}"
 						required
 						data-parsley-trigger="change"
-						data-parsley-error-message="{{{ trans('platform/users::auth/form.password_error') }}}">
+						data-parsley-error-message="{{ trans('platform/users::auth/form.password_error') }}">
 
 						<span class="help-block">
-							{{{ Alert::onForm('password') ?: trans('platform/users::auth/form.password_help') }}}
+							{{ Alert::onForm('password') ?: trans('platform/users::auth/form.password_help') }}
 						</span>
 
 					</div>
@@ -72,7 +72,7 @@
 
 							<input type="checkbox" name="remember" id="remember" value="1"{{ Input::old('remember') ? ' checked="checked"' : null }} />
 
-							{{{ trans('platform/users::auth/form.login.remember-me') }}}
+							{{ trans('platform/users::auth/form.login.remember-me') }}
 
 						</label>
 
@@ -83,8 +83,8 @@
 					{{-- Form actions --}}
 					<div class="form-group">
 
-						<button class="btn btn-primary btn-block" type="submit">{{{ trans('platform/users::auth/form.login.submit') }}}</button>
-						
+						<button class="btn btn-primary btn-block" type="submit">{{ trans('platform/users::auth/form.login.submit') }}</button>
+
 						<p class="help-block text-center">Sign in using your Windows domain account; use the same password that you use to log onto your work computer.</p>
 					</div>
 
@@ -98,7 +98,7 @@
 		@if (count($connections) > 0)
 		<div class="panel panel-default">
 
-			<div class="panel-heading">{{{ trans('platform/users::auth/form.login-social.legend') }}}</div>
+			<div class="panel-heading">{{ trans('platform/users::auth/form.login-social.legend') }}</div>
 
 			<div class="panel-body">
 

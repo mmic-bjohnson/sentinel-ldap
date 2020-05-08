@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-{{{ trans('platform/users::auth/form.forgot-password.legend') }}} ::
+{!! trans('platform/users::auth/form.forgot-password.legend') !!} ::
 @parent
 @stop
 
