@@ -2,6 +2,7 @@
 
 
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Arr;
 
 use Cartalyst\Sentinel\Laravel\SentinelServiceProvider;
 
@@ -36,7 +37,7 @@ public function boot()
 	
 	//This is a sensitive, environment-specific credential.
 	
-	$this->app['config']->set('roshangautam.sentinel-ldap.search_password', env('LDAP_SEARCH_PASSWORD'));
+	$this->app['config']->set('roshangautam.sentinel-ldap.search_password', config('mmic.sentinel-ldap.ldap_search_password'));
 	
 	//Replace Sentinel's included user model with our custom model, which is
 	//required to be able to store user data across more than one DB table.
@@ -112,12 +113,12 @@ protected function registerSentinel()
 	$this->app->singleton('sentinel.users', function ($app) {
 		
 		$config = $app['config']->get('cartalyst.sentinel');
-		
-		$users        = array_get($config, 'users.model');
-		$roles        = array_get($config, 'roles.model');
-		$persistences = array_get($config, 'persistences.model');
-		$permissions  = array_get($config, 'permissions.class');
-		
+
+		$users        = Arr::get($config, 'users.model');
+		$roles        = Arr::get($config, 'roles.model');
+		$persistences = Arr::get($config, 'persistences.model');
+		$permissions  = Arr::get($config, 'permissions.class');
+
 		if (class_exists($roles) && method_exists($roles, 'setUsersModel')) {
 			forward_static_call_array([$roles, 'setUsersModel'], [$users]);
 		}

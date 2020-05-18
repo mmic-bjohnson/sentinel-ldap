@@ -14,7 +14,7 @@ class MmicIlluminateUserRepository extends IlluminateUserRepository
 /**
  * {@inheritDoc}
  */
-public function findByCredentials(array $credentials)
+public function findByCredentials(array $credentials): ? UserInterface
 {
 	$instance = $this->createModel();
 	
@@ -54,7 +54,7 @@ public function findByCredentials(array $credentials)
 /**
  * {@inheritDoc}
  */
-public function create(array $credentials, Closure $callback = null)
+public function create(array $credentials, Closure $callback = null): ?UserInterface
 {
 	$user = $this->createModel();
 	
@@ -92,7 +92,7 @@ public function create(array $credentials, Closure $callback = null)
 /**
  * {@inheritDoc}
  */
-public function update($user, array $credentials)
+public function update($user, array $credentials): UserInterface
 {
 	if (! $user instanceof UserInterface) {
 		$user = $this->findById($user);
