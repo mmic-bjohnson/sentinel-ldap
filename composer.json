@@ -15,10 +15,10 @@
 		}
 	],
 	"require": {
-		"php": "^7.2.5",
+		"php": "^7.4 || ^8.0",
 		"cartalyst/composer-installers": "^2.0",
-		"cartalyst/support": "^4.0",
-		"platform/foundation": "^9.0"
+		"cartalyst/support": "^5.0",
+		"platform/foundation": "^10.0"
 	},
 	"autoload": {
 		"classmap": [
