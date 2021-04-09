@@ -28,13 +28,13 @@ class Manager {
 	 * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
-	public function __construct(Sentinel $sentinel, 
+	public function __construct(Sentinel $sentinel,
 		Dispatcher $dispatcher = null)
 	{
 		if ( ! function_exists('ldap_connect'))
 		{
 			throw new \Exception('LDAPauth requires the php-ldap extension to be installed.');
-		}		
+		}
 		$this->sentinel = $sentinel;
 
 		if (isset($dispatcher))
@@ -59,11 +59,11 @@ class Manager {
 
 		$config = config('roshangautam.sentinel-ldap');
 
-		if($conn = $this->connect($config['host'], $config['port'])) 
+		if($conn = $this->connect($config['host'], $config['port']))
 		{
 
 			$user = $this->sentinel->findByCredentials($credentials);
-			
+
 			ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 
 			$valid = $user !== null ? ldap_bind($conn, $user->email, $credentials['password']) : false;
@@ -71,47 +71,46 @@ class Manager {
 			if ($valid) {
 		        $this->login($user, $remember);
 		        $this->disconnect($conn);
-				return $user;				
-			}	
-			
+				return $user;
+			}
+
 		}
 		$this->disconnect($conn);
 		return false;
 	}
 
-	protected function connect($ldap_host, $ldap_port) 
+	protected function connect($ldap_host, $ldap_port)
 	{
 		if ($ldap_host && $ldap_port) return @ldap_connect($ldap_host, $ldap_port);
 		return false;
 	}
 
-	protected function disconnect($conn) 
+	protected function disconnect($conn)
 	{
 		@ldap_unbind($conn);
-		@ldap_close($conn);	
 	}	
 
-	public function search($query, $attr = "sn" , $email = true) 
+	public function search($query, $attr = "sn" , $email = true)
 	{
 		$config = config('roshangautam.sentinel-ldap');
 		if($email) $query = substr($query, 0, strrpos($query, '@'));
 
-		if($conn = $this->connect($config['host'], $config['port'])) 
-		{		
+		if($conn = $this->connect($config['host'], $config['port']))
+		{
 
 			$attributes = [
-				"ou", 
-				"sn", 
-				"cn", 
-				"givenname", 
-				"displayname", 
-				"department", 
-				"mail", 
+				"ou",
+				"sn",
+				"cn",
+				"givenname",
+				"displayname",
+				"department",
+				"mail",
 				"userPrincipalName",
-				"telephonenumber", 
-				"sAMAccountName", 
+				"telephonenumber",
+				"sAMAccountName",
 				"employeeid"
-			];		
+			];
 
 			$filter = "(" . $attr . "=*" . $query . "*)";
 
@@ -121,14 +120,14 @@ class Manager {
 			@ldap_bind($conn, $config['search_user_dn'], $config['search_password']);
 
 			$read = @ldap_search($conn, $config['search_base'],$filter, $attributes);
-			
+
 			$raw = ldap_get_entries($conn, $read);
 
 			$results = $this->prepareData($raw);
 
 			$this->disconnect($conn);
 
-			return $results;			
+			return $results;
 		}
 		return false;
 	}
@@ -176,9 +175,9 @@ class Manager {
 					$processed[$i][$key] = $value;
 				}
 			}
-			
+
 		}
-		return $processed;		
+		return $processed;
 	}
 
 }
