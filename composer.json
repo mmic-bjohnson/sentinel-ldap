@@ -12,13 +12,18 @@
 		{
 			"type": "composer",
 			"url": "https://packages.cartalyst.com"
+		},
+		{
+			"type": "vcs",
+			"url":  "https://github.com/MedicalMutual/sentinel-ldap"
 		}
 	],
 	"require": {
 		"php": "^7.4 || ^8.0",
 		"cartalyst/composer-installers": "^2.0",
 		"cartalyst/support": "^5.0",
-		"platform/foundation": "^10.0"
+		"platform/foundation": "^10.0",
+		"roshangautam/sentinel-ldap": "dev-fix-php8-exception"
 	},
 	"autoload": {
 		"classmap": [
