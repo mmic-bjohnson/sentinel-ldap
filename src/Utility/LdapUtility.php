@@ -81,7 +81,7 @@ public function getConfig()
  */
 public function guidToString($binary_guid)
 {
-	$hex_guid = unpack("H*hex", $binary_guid); 
+	$hex_guid = unpack("H*hex", $binary_guid);
 	$hex = $hex_guid["hex"];
 	
 	$hex1 = substr($hex, -26, 2) . substr($hex, -28, 2) . substr($hex, -30, 2) . substr($hex, -32, 2);
@@ -157,14 +157,9 @@ public function lookupUserDetails($username)
 	
 	#if ($result === false) {
 	#	$this->error('Call to ldap_search() failed');
-	#	
+	#
 	#	return false;
 	#}
-	
-	//TODO Suppressed due to (undocumented) deprecation in PHP 7.
-	//-CBJ 2016.02.01
-	
-	@ldap_sort($ldap, $result, 'sn');
 	
 	$info = ldap_get_entries($ldap, $result);
 	
